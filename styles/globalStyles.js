@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const styles = StyleSheet.create({
+const globalStyles = StyleSheet.create({
   flexContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -8,4 +8,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default styles;
+export default globalStyles;
