@@ -1,17 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet,
-  Dimensions,
-  FlatList,
+  ScrollView,
 } from 'react-native';
+
 import Produs from '../components/Produs';
 import globalStyles from '../styles/globalStyles';
 
 const Home = ({navigation}) => {
   const [produse, setProduse] = useState([]);
+  const [produseInCos, setProduseInCos] = useState([]);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Produse',
+      headerRight: () => (
+        <TouchableOpacity
+          style={styles.right}
+          onPress={() => navigation.navigate('Cart')}>
+          {produseInCos.length > 0 ? (
+            <Text style={styles.nr}>{produseInCos.length + 1}</Text>
+          ) : null}
+          <Image source={require('../img/cart.png')} style={styles.img} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, produseInCos]);
+
   useEffect(() => {
     fetch('http://192.168.0.157/mo-api/public/items')
       .then(res => res.json())
@@ -19,45 +37,41 @@ const Home = ({navigation}) => {
         if (data) {
           setProduse(data);
         }
-        console.log(data);
+        //console.log(data);
       })
       .catch(err => console.log(err));
   }, []);
+  const adaugareInCos = id => {
+    const item = produse.find(produs => produs.id === id);
+    setProduseInCos([...produseInCos, item]);
+  };
+  console.log(produseInCos);
   return (
     <View style={globalStyles.flexContainer}>
-      <FlatList
-        data={produse}
-        renderItem={({item}) => <Produs item={item} />}
-        keyExtractor={item => item.id}
-      />
-      <View style={styles.cartBtn}>
-        <TouchableOpacity
-          style={styles.cos}
-          onPress={() => navigation.navigate('Cart')}>
-          <Text style={{color: 'white', fontSize: 18}}>
-            Vezi cosul de cumparaturi
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView>
+        {produse.map(produs => (
+          <Produs
+            produs={produs}
+            adaugareInCos={adaugareInCos}
+            key={produs.id}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cartBtn: {
-    width: Dimensions.get('screen').width,
-    position: 'absolute',
-    bottom: 15,
-    right: 0,
+  right: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cos: {
-    width: 0.8 * Dimensions.get('screen').width,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
+  nr: {
+    marginRight: 5,
+  },
+  img: {
+    width: 30,
+    height: 30,
   },
 });
 

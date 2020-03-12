@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from './screens/Home';
 import Cart from './screens/Cart';
+import {Text} from 'react-native';
 
 const Stack = createStackNavigator();
 const App = () => {
