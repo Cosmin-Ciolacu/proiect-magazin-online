@@ -3,7 +3,7 @@ import {View, Text, Image, Button, StyleSheet, Dimensions} from 'react-native';
 
 const {width} = Dimensions.get('screen');
 
-const Produs = ({produs, adaugareInCos}) => {
+const ProdusCos = ({produs}) => {
   return (
     <View>
       <View style={styles.container}>
@@ -17,7 +17,6 @@ const Produs = ({produs, adaugareInCos}) => {
           <Text>Categorie: {produs.categorie}</Text>
         </View>
       </View>
-      <Button title="adauga in cos" onPress={() => adaugareInCos(produs.id)} />
     </View>
   );
 };
@@ -52,4 +51,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Produs;
+export default ProdusCos;
