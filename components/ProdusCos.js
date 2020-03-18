@@ -3,7 +3,7 @@ import {View, Text, Image, Button, StyleSheet, Dimensions} from 'react-native';
 
 const {width} = Dimensions.get('screen');
 
-const ProdusCos = ({produs}) => {
+const ProdusCos = ({produs, stergereProdus}) => {
   return (
     <View>
       <View style={styles.container}>
@@ -17,6 +17,12 @@ const ProdusCos = ({produs}) => {
           <Text>Categorie: {produs.categorie}</Text>
         </View>
       </View>
+      <Button
+        title="sterge produsul din cos"
+        color="red"
+        onPress={() => stergereProdus(produs.id)}
+        style={{backgroundColor: 'red'}}
+      />
     </View>
   );
 };

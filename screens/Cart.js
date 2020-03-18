@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {View, Text, Button, ScrollView, Alert} from 'react-native';
 import globalStyles from '../styles/globalStyles';
 import ProdusCos from '../components/ProdusCos';
@@ -18,6 +18,17 @@ const Cart = ({route, navigation}) => {
       setProduseInCos(produseInCos);
     }
   }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `total plata: ${total}`,
+    });
+  }, [navigation, total]);
+
+  const stergereProdus = id => {
+    const produseRamase = produseInCos.filter(produs => produs.id !== id);
+    //console.log(produseRamase);
+    setProduseInCos(produseRamase);
+  };
 
   const trimiteComanda = async () => {
     try {
@@ -61,15 +72,16 @@ const Cart = ({route, navigation}) => {
           <Text>Nu exista produse in cos</Text>
         ) : (
           produseInCos.map(produs => (
-            <ProdusCos produs={produs} key={produs.id} />
+            <ProdusCos
+              produs={produs}
+              stergereProdus={stergereProdus}
+              key={produs.id}
+            />
           ))
         )}
       </ScrollView>
       {produseInCos.length !== 0 ? (
         <>
-          <Text style={{fontSize: 22, flex: 1, marginTop: -200}}>
-            Suma totala de platit este: {total}{' '}
-          </Text>
           <Button
             title="trimite comanda"
             style={{
